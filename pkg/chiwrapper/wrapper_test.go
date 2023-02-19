@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/inquizarus/rwapper/pkg/chiwrapper"
+	"github.com/inquizarus/rwapper/v2/pkg/chiwrapper"
 
 	"github.com/stretchr/testify/assert"
 )

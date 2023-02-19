@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/inquizarus/rwapper"
+	"github.com/inquizarus/rwapper/v2"
 	"github.com/labstack/echo/v4"
 )
 

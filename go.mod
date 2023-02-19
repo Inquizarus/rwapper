@@ -1,4 +1,4 @@
-module github.com/inquizarus/rwapper
+module github.com/inquizarus/rwapper/v2
 
 go 1.19
 
