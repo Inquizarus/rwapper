@@ -24,7 +24,7 @@ func (rw *echoRouterWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	rw.router.ServeHTTP(w, r)
 }
 
-func (rw *echoRouterWrapper) Handle(method, path string, handler http.Handler, middlewares []rwapper.Middleware) {
+func (rw *echoRouterWrapper) Handle(method, path string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) {
 	rw.router.Add(method, path, func(c echo.Context) error {
 
 		params := map[string]string{}
@@ -40,12 +40,12 @@ func (rw *echoRouterWrapper) Handle(method, path string, handler http.Handler, m
 	})
 }
 
-func (rw *echoRouterWrapper) Handler(method, path string, handler http.Handler, middlewares []rwapper.Middleware) {
-	rw.Handle(method, path, handler, middlewares)
+func (rw *echoRouterWrapper) Handler(method, path string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) {
+	rw.Handle(method, path, handler, middlewares...)
 }
 
-func (rw *echoRouterWrapper) HandlerFunc(method, path string, handler http.HandlerFunc, middlewares []rwapper.Middleware) {
-	rw.Handler(method, path, handler, middlewares)
+func (rw *echoRouterWrapper) HandlerFunc(method, path string, handler http.HandlerFunc, middlewares ...func(http.Handler) http.Handler) {
+	rw.Handler(method, path, handler, middlewares...)
 }
 
 func (rw *echoRouterWrapper) ParameterByName(name string, r *http.Request) string {

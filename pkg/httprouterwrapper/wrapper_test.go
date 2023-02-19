@@ -5,7 +5,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/inquizarus/rwapper"
 	"github.com/inquizarus/rwapper/pkg/httprouterwrapper"
 
 	"github.com/stretchr/testify/assert"
@@ -22,14 +21,14 @@ func TestThatTheWrapperWorksAsIntended(t *testing.T) {
 
 	wrapper.HandlerFunc(http.MethodGet, "/foo/"+wrapper.Parameterize(parameterKey), func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(wrapper.ParameterByName(parameterKey, r)))
-	}, []rwapper.Middleware{func(next http.Handler) http.Handler {
+	}, func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set(testHeaderKey, testValue)
 			if nil != next {
 				next.ServeHTTP(w, r)
 			}
 		})
-	}})
+	})
 
 	response := httptest.NewRecorder()
 	request := httptest.NewRequest(http.MethodGet, "http://localhost/foo/"+testValue, nil)
