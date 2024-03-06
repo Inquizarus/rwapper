@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/inquizarus/rwapper/v2"
+	"github.com/inquizarus/rwapper/v2/pkg/middlewares"
 )
 
 type wrapper struct {
@@ -18,17 +19,17 @@ func (rw *wrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // Handle registers a handler for the specified method and path.
 // It also applies any specified middlewares to the handler.
-func (rw *wrapper) Handle(method string, path string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) {
+func (rw *wrapper) Handle(method string, path string, handler http.Handler, middlewaresList ...func(http.Handler) http.Handler) {
 	v := strings.TrimLeft(fmt.Sprintf("%s %s", method, path), " ")
-	rw.router.Handle(v, rwapper.ChainMiddleware(handler, middlewares...))
+	rw.router.Handle(v, middlewares.Chain(handler, middlewaresList...))
 }
 
-func (rw *wrapper) Handler(method, path string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) {
-	rw.Handle(method, path, handler, middlewares...)
+func (rw *wrapper) Handler(method, path string, handler http.Handler, middlewaresList ...func(http.Handler) http.Handler) {
+	rw.Handle(method, path, handler, middlewaresList...)
 }
 
-func (rw *wrapper) HandlerFunc(method, path string, handler http.HandlerFunc, middlewares ...func(http.Handler) http.Handler) {
-	rw.Handler(method, path, handler, middlewares...)
+func (rw *wrapper) HandlerFunc(method, path string, handler http.HandlerFunc, middlewaresList ...func(http.Handler) http.Handler) {
+	rw.Handler(method, path, handler, middlewaresList...)
 }
 
 func (rw *wrapper) ParameterByName(name string, r *http.Request) string {

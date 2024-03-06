@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/inquizarus/rwapper/v2"
+	"github.com/inquizarus/rwapper/v2/pkg/middlewares"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -17,16 +18,16 @@ func (rw *httprouterWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	rw.router.ServeHTTP(w, r)
 }
 
-func (rw *httprouterWrapper) Handle(method, path string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) {
-	rw.router.Handler(method, path, rwapper.ChainMiddleware(handler, middlewares...))
+func (rw *httprouterWrapper) Handle(method, path string, handler http.Handler, middlewareList ...func(http.Handler) http.Handler) {
+	rw.router.Handler(method, path, middlewares.Chain(handler, middlewareList...))
 }
 
-func (rw *httprouterWrapper) Handler(method, path string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) {
-	rw.Handle(method, path, handler, middlewares...)
+func (rw *httprouterWrapper) Handler(method, path string, handler http.Handler, middlewareList ...func(http.Handler) http.Handler) {
+	rw.Handle(method, path, handler, middlewareList...)
 }
 
-func (rw *httprouterWrapper) HandlerFunc(method, path string, handler http.HandlerFunc, middlewares ...func(http.Handler) http.Handler) {
-	rw.Handler(method, path, handler, middlewares...)
+func (rw *httprouterWrapper) HandlerFunc(method, path string, handler http.HandlerFunc, middlewareList ...func(http.Handler) http.Handler) {
+	rw.Handler(method, path, handler, middlewareList...)
 }
 
 func (rw *httprouterWrapper) ParameterByName(name string, r *http.Request) string {

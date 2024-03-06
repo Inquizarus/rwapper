@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/inquizarus/rwapper/v2"
+	"github.com/inquizarus/rwapper/v2/pkg/middlewares"
 	"github.com/labstack/echo/v4"
 )
 
@@ -24,7 +25,7 @@ func (rw *echoRouterWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	rw.router.ServeHTTP(w, r)
 }
 
-func (rw *echoRouterWrapper) Handle(method, path string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) {
+func (rw *echoRouterWrapper) Handle(method, path string, handler http.Handler, middlewareList ...func(http.Handler) http.Handler) {
 	rw.router.Add(method, path, func(c echo.Context) error {
 
 		params := map[string]string{}
@@ -35,17 +36,17 @@ func (rw *echoRouterWrapper) Handle(method, path string, handler http.Handler, m
 			params[name] = values[i]
 		}
 
-		rwapper.ChainMiddleware(handler, middlewares...).ServeHTTP(c.Response(), c.Request().WithContext(context.WithValue(c.Request().Context(), echoParamsContextKeyName, params)))
+		middlewares.Chain(handler, middlewareList...).ServeHTTP(c.Response(), c.Request().WithContext(context.WithValue(c.Request().Context(), echoParamsContextKeyName, params)))
 		return nil
 	})
 }
 
-func (rw *echoRouterWrapper) Handler(method, path string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) {
-	rw.Handle(method, path, handler, middlewares...)
+func (rw *echoRouterWrapper) Handler(method, path string, handler http.Handler, middlewareList ...func(http.Handler) http.Handler) {
+	rw.Handle(method, path, handler, middlewareList...)
 }
 
-func (rw *echoRouterWrapper) HandlerFunc(method, path string, handler http.HandlerFunc, middlewares ...func(http.Handler) http.Handler) {
-	rw.Handler(method, path, handler, middlewares...)
+func (rw *echoRouterWrapper) HandlerFunc(method, path string, handler http.HandlerFunc, middlewareList ...func(http.Handler) http.Handler) {
+	rw.Handler(method, path, handler, middlewareList...)
 }
 
 func (rw *echoRouterWrapper) ParameterByName(name string, r *http.Request) string {
