@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/inquizarus/rwapper/v2"
-	"github.com/inquizarus/rwapper/v2/pkg/middlewares"
+	"github.com/inquizarus/rwapper/v3"
+	"github.com/inquizarus/rwapper/v3/pkg/middlewares"
 	"github.com/labstack/echo/v4"
 )
 

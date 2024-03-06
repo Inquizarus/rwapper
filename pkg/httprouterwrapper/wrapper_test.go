@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/inquizarus/rwapper/v2/pkg/httprouterwrapper"
+	"github.com/inquizarus/rwapper/v3/pkg/httprouterwrapper"
 
 	"github.com/stretchr/testify/assert"
 )

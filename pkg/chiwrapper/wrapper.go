@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/inquizarus/rwapper/v2"
-	"github.com/inquizarus/rwapper/v2/pkg/middlewares"
+	"github.com/inquizarus/rwapper/v3"
+	"github.com/inquizarus/rwapper/v3/pkg/middlewares"
 )
 
 type chiRouterWrapper struct {

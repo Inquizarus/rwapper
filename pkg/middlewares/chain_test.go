@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/inquizarus/rwapper/v2/pkg/middlewares"
+	"github.com/inquizarus/rwapper/v3/pkg/middlewares"
 	"github.com/stretchr/testify/assert"
 )
 
