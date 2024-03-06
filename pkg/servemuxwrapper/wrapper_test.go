@@ -33,6 +33,15 @@ func TestThatTheWrapperWorksAsIntended(t *testing.T) {
 		headerVal   string
 	}{
 		{
+			method:      "ASD",
+			routerPath:  "/foo/" + wrapper.Parameterize(testParameterKey),
+			requestPath: "/foo/" + testParameterValue,
+			body:        nil,
+			expected:    testParameterValue,
+			headerKey:   testHeaderKey,
+			headerVal:   testHeaderValue,
+		},
+		{
 			method:      http.MethodGet,
 			routerPath:  "/foo/" + wrapper.Parameterize(testParameterKey),
 			requestPath: "/foo/" + testParameterValue,
