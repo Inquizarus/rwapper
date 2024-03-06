@@ -1,7 +1,9 @@
 package servemuxwrapper
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/inquizarus/rwapper/v2"
 )
@@ -88,12 +90,12 @@ func (rw *wrapper) HandlerFunc(method, path string, handler http.HandlerFunc, mi
 	rw.Handler(method, path, handler, middlewares...)
 }
 
-func (rw *wrapper) ParameterByName(name string, _ *http.Request) string {
-	return name
+func (rw *wrapper) ParameterByName(name string, r *http.Request) string {
+	return r.PathValue(strings.TrimRight(name, "."))
 }
 
 func (rw *wrapper) Parameterize(name string) string {
-	return name
+	return fmt.Sprintf("{%s}", strings.Trim(name, "{}"))
 }
 
 func New(router *http.ServeMux) rwapper.RouterWrapper {
